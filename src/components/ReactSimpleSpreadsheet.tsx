@@ -2,6 +2,9 @@ import '../rss.scss';
 import React from "react";
 import {SpreadsheetsList} from "./SpreadsheetsList";
 import {SpreadsheetView} from "./SpreadsheetView";
+import {createThemeContext} from "../useTheme";
+
+export const ThemeContext = createThemeContext();
 
 export function ReactSimpleSpreadsheet() {
 
@@ -17,7 +20,7 @@ export function ReactSimpleSpreadsheet() {
             const data = await response.json();
             setMainState(JSON.parse(data));
         })
-    })
+    }, [])
 
 
     const onToggleSelection = (sheetName: string) => {
@@ -43,25 +46,44 @@ export function ReactSimpleSpreadsheet() {
     }
 
     return (
-        <div className={'rss-main-container'}>
-            <div className={'right-panel'}>
-                <SpreadsheetsList list={Object.keys(mainState)}
-                                  selectedSheets={selectedSheets}
-                                  toggleSelection={onToggleSelection}
-                />
-                <button className={'change-theme-button'}>Change Theme</button>
-            </div>
-            <div className={'spreadsheets-views'}>
-                {selectedSheets.map(sheetName => (
-                    <SpreadsheetView key={sheetName}
-                                     name={sheetName}
-                                     data={getDataBySheetName(sheetName)}
-                                     updateData={newData => updateSpreadsheetData(sheetName, newData)}
+        <ThemeContext.Provider value={{
+            evenRows: {
+                color: '',
+                backgroundColor: ''
+            },
+            oddRows: {
+                color: '',
+                backgroundColor: ''
+            },
+            evenCellValues: {
+                color: '',
+                backgroundColor: ''
+            },
+            oddCellValues: {
+                color: '',
+                backgroundColor: ''
+            },
+        }}>
+            <div className={'rss-main-container'}>
+                <div className={'right-panel'}>
+                    <SpreadsheetsList list={Object.keys(mainState)}
+                                      selectedSheets={selectedSheets}
+                                      toggleSelection={onToggleSelection}
                     />
-                ))}
-                {!selectedSheets.length ?
-                    <div className={'empty-selection-msg'}>No spreadsheet selected</div> : null}
+                    <button className={'change-theme-button'}>Change Theme</button>
+                </div>
+                <div className={'spreadsheets-views'}>
+                    {selectedSheets.map(sheetName => (
+                        <SpreadsheetView key={sheetName}
+                                         name={sheetName}
+                                         data={getDataBySheetName(sheetName)}
+                                         updateData={newData => updateSpreadsheetData(sheetName, newData)}
+                        />
+                    ))}
+                    {!selectedSheets.length ?
+                        <div className={'empty-selection-msg'}>No spreadsheet selected</div> : null}
+                </div>
             </div>
-        </div>
+        </ThemeContext.Provider>
     )
 }

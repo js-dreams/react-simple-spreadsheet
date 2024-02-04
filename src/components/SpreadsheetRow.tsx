@@ -17,6 +17,7 @@ export function SpreadsheetRow(props: {
                 <SpreadsheetCell key={idx}
                                  colIndex={idx}
                                  data={value}
+                                 oddRow={!!(props.rowIndex % 2)}
                                  onValueChange={(newVal) => handleValueChange(idx, newVal)}
                 />
             ))}
