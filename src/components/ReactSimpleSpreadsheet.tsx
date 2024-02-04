@@ -2,13 +2,33 @@ import '../rss.scss';
 import React from "react";
 import {SpreadsheetsList} from "./SpreadsheetsList";
 import {SpreadsheetView} from "./SpreadsheetView";
-import {createThemeContext} from "../useTheme";
+import {createThemeContext, ThemeDefinition} from "../useTheme";
+import {ThemeEditor} from "./ThemeEditor";
 
 export const ThemeContext = createThemeContext();
 
 export function ReactSimpleSpreadsheet() {
 
+    const [themeState, setThemeState] = React.useState({
+        evenRows: {
+            color: '',
+            backgroundColor: ''
+        },
+        oddRows: {
+            color: '',
+            backgroundColor: ''
+        },
+        evenCellValues: {
+            color: '',
+            backgroundColor: ''
+        },
+        oddCellValues: {
+            color: '',
+            backgroundColor: ''
+        },
+    })
     const [mainState, setMainState] = React.useState({});
+    const [themeEditorOpened, setThemeEditorOpened] = React.useState(false);
     const [selectedSheets, setSelectedSheets] = React.useState([]);
 
     React.useEffect(() => {
@@ -45,32 +65,20 @@ export function ReactSimpleSpreadsheet() {
         })
     }
 
+    const onThemeButtonClick = () => {
+        setThemeEditorOpened(!themeEditorOpened);
+    }
+
     return (
-        <ThemeContext.Provider value={{
-            evenRows: {
-                color: '',
-                backgroundColor: ''
-            },
-            oddRows: {
-                color: '',
-                backgroundColor: ''
-            },
-            evenCellValues: {
-                color: '',
-                backgroundColor: ''
-            },
-            oddCellValues: {
-                color: '',
-                backgroundColor: ''
-            },
-        }}>
+        <ThemeContext.Provider value={themeState}>
             <div className={'rss-main-container'}>
                 <div className={'right-panel'}>
                     <SpreadsheetsList list={Object.keys(mainState)}
                                       selectedSheets={selectedSheets}
                                       toggleSelection={onToggleSelection}
                     />
-                    <button className={'change-theme-button'}>Change Theme</button>
+                    <button className={'change-theme-button ' + (themeEditorOpened ? 'editing-theme' : '')}
+                            onClick={() => onThemeButtonClick()}>Change Theme</button>
                 </div>
                 <div className={'spreadsheets-views'}>
                     {selectedSheets.map(sheetName => (
@@ -84,6 +92,7 @@ export function ReactSimpleSpreadsheet() {
                         <div className={'empty-selection-msg'}>No spreadsheet selected</div> : null}
                 </div>
             </div>
+            {themeEditorOpened ? <ThemeEditor updateThemeState={state => setThemeState(state as ThemeDefinition)}/> : null}
         </ThemeContext.Provider>
     )
 }

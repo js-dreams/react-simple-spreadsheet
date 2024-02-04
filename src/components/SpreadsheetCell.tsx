@@ -10,9 +10,9 @@ export function SpreadsheetCell(props: {
 
     const theme = React.useContext(ThemeContext);
 
-    const relevantRowStyle = props.oddRow ? theme.oddRows : theme.evenRows;
+    const relevantRowStyle = props.oddRow ? theme?.oddRows : theme?.evenRows;
 
-    const relevantCellStyle = (+props.data % 2) ? theme.oddCellValues : theme.evenCellValues;
+    const relevantCellStyle = (+props.data % 2) ? theme?.oddCellValues : theme?.evenCellValues;
 
     const style = {
         backgroundColor: relevantCellStyle?.backgroundColor || relevantRowStyle?.backgroundColor,

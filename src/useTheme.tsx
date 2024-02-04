@@ -6,12 +6,12 @@ export interface ThemeDefinitionProps {
 }
 
 export interface ThemeDefinition {
-    evenRows?: ThemeDefinitionProps;
-    oddRows?: ThemeDefinitionProps;
-    evenCellValues?: ThemeDefinitionProps;
-    oddCellValues?: ThemeDefinitionProps;
+    evenRows: ThemeDefinitionProps;
+    oddRows: ThemeDefinitionProps;
+    evenCellValues: ThemeDefinitionProps;
+    oddCellValues: ThemeDefinitionProps;
 }
 
 export function createThemeContext() {
-    return React.createContext<ThemeDefinition>({})
+    return React.createContext<ThemeDefinition | null>(null)
 }
