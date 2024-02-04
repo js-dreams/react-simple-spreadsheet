@@ -20,6 +20,9 @@ export function SpreadsheetRow(props: {
                                  onValueChange={(newVal) => handleValueChange(idx, newVal)}
                 />
             ))}
+            <div className={'cell row-sum'}>
+                <input readOnly={true} value={props.data.reduce((acc, curr) => acc + curr, 0)}></input>
+            </div>
         </div>
     )
 }
