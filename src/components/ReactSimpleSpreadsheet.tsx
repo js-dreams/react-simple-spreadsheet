@@ -3,16 +3,22 @@ import React from "react";
 import {SpreadsheetsList} from "./SpreadsheetsList";
 import {SpreadsheetView} from "./SpreadsheetView";
 
-const initialStateExample = {
-    "Sheet 1": [[1,2,3],[4,5,6],[7,8,9]],
-    "Sheet 2": [[1,2],[10,5]],
-    "Sheet 3": [[1],[5],[10],[20],[30]],
-}
-
 export function ReactSimpleSpreadsheet() {
 
-    const [mainState, setMainState] = React.useState(initialStateExample);
+    const [mainState, setMainState] = React.useState({});
     const [selectedSheets, setSelectedSheets] = React.useState([]);
+
+    React.useEffect(() => {
+        const URL = 'https://clinch-public-documents.s3.amazonaws.com/clinch-recruitment/spreadsheet.json';
+
+        fetch(URL, {
+            method: 'get'
+        }).then(async (response) => {
+            const data = await response.json();
+            setMainState(JSON.parse(data));
+        })
+    })
+
 
     const onToggleSelection = (sheetName: string) => {
         const newSelectedState = [...selectedSheets];

@@ -13,7 +13,7 @@ export function SpreadsheetHeaderRow(props: {
     return (
         <div className={'row header-row'}>
             {columnData.map((value: string, idx: number) => (
-                <div className={'cell'}>{value}</div>
+                <div key={idx} className={'cell'}>{value}</div>
             ))}
         </div>
     )
